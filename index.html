@@ -1,0 +1,373 @@
+<!DOCTYPE html> 
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/input_range_style.css">
+  
+  <title>Sample MATLAB Code</title>
+
+  <script src="js/plot.js"></script>
+
+  <style media="screen">
+    .jumbotron {
+      background-color: #940c42;
+      /* background-color: #e84a5f; */
+    }
+    .bg-color {
+      background-color: #faf3dd;
+    }
+    .container-fluid {
+      padding-left: 0px;
+      padding-right: 0px;
+      font-size: clamp(14px, 2vw, 16px);
+      /* font-size: 16px; */
+      background-color: #e8e8e8;
+    }
+    .input-group-text {
+      color: white;
+      background-color: #8b46bd;
+    }
+    .page-header {
+      /* background-color: #018383; */
+      background-color: #132743;
+      /* background-color: #0c9463; */
+    }
+    .card-header {
+      color: white;
+      background-color: #132743;
+    }
+    .command {
+      height: min(38vw, 270px);
+      margin-bottom: 4px;
+    }
+    .workspace {
+      height: min(47vw, 300px);
+    }
+    .code {
+      /* height: min(75vw, 560px); */
+      /* margin-bottom: 4px; */
+      /* width: max(50vw, 250px); */
+      /* min-width: 300px; */
+      /* width: 100%; */
+    }
+    .plot {
+      /* height: 480px; */
+    }
+
+    .card {
+      margin: 8px;
+    }
+
+    .command-card {
+      /* height: min(38vw, 270px); */
+      height: fit-content;
+    }
+    .workspace-card {
+      /* height: 300px; */
+      height: fit-content;
+      /* height: min(47vw, 300px); */
+    }
+    .code-card {
+      /* height: fit-content; */
+      /* height: min(75vw, 560px); */
+      width: 100%;
+    }
+    .plot-card {
+      /* height: 480px; */
+      /* max-height: fit-content; */
+    }
+    .explanation-card {
+      /* height: 260px; */
+      height: fit-content;
+      /* min-height: max-content; */
+      /* flex-direction: row; */
+    }
+    .card-body {
+      padding: 0.3rem;
+      background-color: #c3f0ca;
+
+    }
+    .explanation-body {
+      height: fit-content;
+      width: fit-content;
+    }
+    .plot-body {
+      height: fit-content;
+      /* width: fit-content; */
+    }
+    .plot-container {
+      height: fit-content;
+      /* height: 460px; */
+    }
+    /* card group aka PRIMARY */
+    .card:hover {
+      box-shadow: 0px 10px 30px -5px rgba(12, 5, 62, 0.95);
+      z-index: 100;
+    }
+    /* [class*='col-'] {
+      padding: 1.4rem;
+    } */
+    .table {
+      color: #132743!important;
+    }
+    #row1 {
+      display: flex;
+      /* align-items: stretch; */
+      /* align-content: stretch; */
+    }
+    #column-1 {
+      /* align-content: stretch; */
+      /* align-self: stretch; */
+      display: flex;
+      flex-direction: column;
+      /* justify-content: space-between; */
+      /* align-items: stretch; */
+    }
+    #column-2 {
+      /* align-content: stretch; */
+      /* align-self: stretch; */
+      display: flex;
+    }
+    #column-3 {
+      display: flex;
+      flex-direction: column;
+    }
+    #plot-card {
+      /* display: flex; */
+      flex-grow: 2;
+    }
+    #command-card {
+      flex-grow: 1;
+    }
+    #workspace-card {
+      flex-grow: 1;
+    }
+    #header-div {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 6px;
+    }
+    #heading-content {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+    }
+    #two-buttons {
+      flex-grow: 2;
+      /* padding: 5px; */
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+    #start-button {
+      flex-grow: 1;
+      padding: 0.5rem;
+    }
+    #reset-button {
+      flex-grow: 1;
+      padding: 0.5rem;
+    }
+    /* Smooth scrolling IF user doesn't have a preference due to motion sensitivities */
+    @media screen and (prefers-reduced-motion: no-preference) {
+      html,
+      body {
+        scroll-behavior: smooth;
+      }
+    }
+}
+  </style>
+
+</head>
+
+<body>
+  <div class="container-fluid">
+
+  <!-- Title -->
+
+    <div id="title-div" class="jumbotron py-3 mb-2 text-center text-white">
+      <!-- <h1 class="display-4">MATLAB </h1> -->
+      <hr class="my-3">
+      <div class="flex">
+          <!-- <h3><p class="font-weight-light font-italic">Choose a signal to start: </p></h3> -->
+          <!-- <div class="">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="validatedInputGroupSelect">Choose Signals</label>
+              </div>
+              <select id="wave-selector" class="custom-select" required>
+                <option value="">Select a Signal...</option>
+                <option value="sine">FFT Signal</option>
+              </select>
+            </div>
+          </div> -->
+      </div>
+    </div>
+
+    <!-- Header -->
+
+    <div id="header-div" class="page-header text-white sticky-top rounded">
+      <div id="heading-content">
+        <h1>
+          <span id="heading" class="font-weight-light py-2">++</span>
+        </h1>
+      </div>
+      <div id="two-buttons">
+        <div id="start-button">
+          <button id="start" type="button" class="btn btn-success btn-block">Start</button>
+        </div>
+        <div id="reset-button">
+          <button id="reset" type="button" class="btn btn-danger btn-block">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+
+      <!-- Row 1 -->
+      <div id="row1" class="row no-gutters d-flex">
+
+        <!-- Column 1 -->
+        <div id="column-1" class="col-lg-3 col-md-5" style="padding-top: 0px">
+
+          <!-- Command Window -->
+          <!-- <div class="col card-group command"> -->
+            <div id="command-card" class="card border-info command-card">
+              <div id="command-header" class="card-header">Command Window</div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table id="command-table" class="table-sm table-borderless">
+                    <col style="width: min-content; background-color: #C0C0C0;"></col>
+                    <tbody id="command">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div id="input-footer" class="card-footer border-success">
+                <div id="input_div">
+                  <div class="justify-content-around input-group">
+                    <label id="input_value" for="formControlRange" class="mt-2">Value: <span id="value"></span></label>
+                    <input id="user_input" class="form-control-range w-50" type="range"/>
+                  </div>
+                  <div class="d-flex justify-content-center mt-2 mb-2">
+                    <button type="button" id="input_button" class="btn btn-danger btn-sm">Ok</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <!-- </div> -->
+
+          <!-- Workspace -->
+          <!-- <div class="col card-group workspace"> -->
+            <div id="workspace-card" class="card border-info workspace-card">
+              <div class="card-header">Workspace</div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table id="work-table" class="table table-sm table-striped">
+                    <!-- <colgroup><col style="width: 1px;"></col></colgroup> -->
+                    <!-- <col style="width: 1px; background-color: #C0C0C0;"></col> -->
+                    <thead id="workspace" class="thead-light">
+                      <tr>
+                        <th style="width: 1px;"></th>
+                        <th>Name</th>
+                        <th>Value</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          <!-- </div> -->
+
+        </div>
+
+        <!-- Column 2 -->
+        <div id="column-2" class="col-lg-4 col-md-7">
+
+          <!-- Code Window -->
+          <!-- <div class="col card-group code"> -->
+            <div id="code-card" class="card border-info code-card">
+              <div class="card-header">Code Window</div>
+              <div id="code-body" class="card-body">
+                <div id="code-div" class="table-responsive">
+                  <table id="code-table" class="table table-sm table-hover">
+                    <col style="width: 1px; background-color: #C0C0C0;"></col>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- <div class="card-footer bg-transparent border-success"> -->
+                <!-- <button id="start" type="button" class="btn btn-success ml-2">Start</button>
+                <button id="reset" type="button" class="btn btn-info ml-2">Reset</button> -->
+              <!-- </div> -->
+            </div>
+          <!-- </div> -->
+
+        </div>
+
+
+        <!-- Column 3 -->
+
+        <div id="column-3" class="col-lg-5">
+
+          <!-- Explanation -->
+          <div class="card border-info explanation-card">
+            <div class="card-header">Code Explanation</div>
+            <div id="explanation-body" class="card-body">
+              <ul id="explanation-list" class="list-group">
+                <!-- <li class="list-group-item list-group-item-success">+</li> -->
+              </ul>
+            </div>
+          </div>
+
+        <!-- Plot Window -->
+        <!-- <div class="col card-group plot"> -->
+          <div id="plot-card" class="card border-info plot-card">
+            <div class="card-header">User's Selected Plot</div>
+            <div id="plot-body" class="card-body" style="box-sizing: content-box;">
+              <div id="plot-container" class="plot-container">
+                <canvas id="myChart1" style="width:100px; height:100px;"></canvas>
+              </div>
+            </div>
+            <!-- <div class="card-footer">Use Mode Bar at top-right for graph interactions</div> -->
+          </div>
+          <div id="plot-card" class="card border-info plot-card">
+            <div class="card-header">Plot</div>
+            <div id="plot-body" class="card-body" style="box-sizing: content-box;">
+              <div id="plot-container" class="plot-container">
+                    <canvas id="myChart" style="width:100px; height:100px;"></canvas>
+              </div>
+            </div>
+            <!-- <div class="card-footer">Use Mode Bar at top-right for graph interactions</div> -->
+          </div>
+          <div id="plot-card" class="card border-info plot-card">
+            <div class="card-header">Interpolating Plot</div>
+            <div id="plot-body" class="card-body" style="box-sizing: content-box;">
+              <div id="plot-container" class="plot-container">
+                <canvas style="width: 627px; height: 563px;" id="myChart2" width="360" height="500" data-height="1800" data-width="360"></canvas>
+              </div>
+            </div>
+            <!-- <div class="card-footer">Use Mode Bar at top-right for graph interactions</div> -->
+          </div>
+
+        </div>
+
+        <!-- Row 2 -->
+        <div id="row2" class="row" style="height: 40px;"></div>
+
+      </div>
+      <!-- End of Row 1 -->
+
+    </div>
+    
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="js/sine.js"></script>
+<script src="js/code.js"></script>
+</body>
+
+</html>

@@ -102,7 +102,7 @@ document.getElementById('title-div').scrollIntoView({
             writeStepCode();
             break;
         case 'sine':
-            heading.innerHTML = 'FFT Signal';
+            heading.innerHTML = 'FFT as an Interpolator';
             writeSineCode();
             break;
         case 'cos':
